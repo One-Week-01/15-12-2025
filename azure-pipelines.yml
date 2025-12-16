@@ -1,0 +1,45 @@
+trigger: none
+
+pool: agent-ka-gang
+
+steps:
+- task: PowerShell@2
+  displayName: Azure Login
+  inputs:
+    targetType: 'inline'
+    script: |
+      az login --service-principal -u 23320ed0-764d-4ccb-a8cb-830c7446b80f -p pCv8Q~.4cioeHgiNlXFxaPcO1b7YpWfg6bOZVaFh --tenant 5c09c46b-8034-4002-8418-77ce48be97db
+      az account set --subscription b4461466-1e6b-4be2-bb70-1e96a72a41c8
+
+- task: PowerShell@2
+  displayName: Terraform Init
+  inputs:
+    targetType: 'inline'
+    script: 'terraform init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+- task: PowerShell@2
+  displayName: Terraform Validate
+  inputs:
+    targetType: 'inline'
+    script: 'terraform validate'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+- task: PowerShell@2
+  displayName: Terraform Plan
+  inputs:
+    targetType: 'inline'
+    script: 'terraform plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+- task: PowerShell@2
+  displayName: Terraform apply
+  inputs:
+    targetType: 'inline'
+    script: 'terraform apply --auto-approve'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+
+
+
+
